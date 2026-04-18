@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Déclic Digital — Calendrier Éditorial Mai 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0a2e;
+    --surface: #1a1040;
+    --surface2: #231558;
+    --border: #2e1f6e;
+    --border2: #3d2a8a;
+    --text: #f0eeff;
+    --muted: #8b7db8;
+    --dim: #4a3d80;
+    --accent: #FF2D9B;
+    --grad: linear-gradient(135deg, #4361EE 0%, #7B2FBE 50%, #FF2D9B 100%);
+    --li: #4361EE;
+    --tw: #9C4FFF;
+    --ig: #FF2D9B;
+    --tt: #9C4FFF;
+    --bl: #4361EE;
+    --li-bg: rgba(67,97,238,0.15);
+    --tw-bg: rgba(156,79,255,0.15);
+    --ig-bg: rgba(255,45,155,0.15);
+    --tt-bg: rgba(156,79,255,0.15);
+    --bl-bg: rgba(67,97,238,0.15);
+    --vid-bg: rgba(255,45,155,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    padding: 2.5rem 2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  header h1 em {
+    font-style: italic;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header-meta {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.8;
+  }
+  .header-meta span { display: block; }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .stat-item {
+    flex: 1;
+    min-width: 100px;
+    padding: 1rem 1.5rem;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: var(--surface); }
+  .stat-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .stat-item[data-p="all"].active::after { background: var(--grad); }
+  .stat-item[data-p="linkedin"].active::after { background: var(--li); }
+  .stat-item[data-p="twitter"].active::after { background: var(--tw); }
+  .stat-item[data-p="video"].active::after { background: var(--ig); }
+  .stat-item[data-p="blog"].active::after { background: var(--bl); }
+  .stat-n {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .stat-item[data-p="all"] .stat-n { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .stat-item[data-p="linkedin"] .stat-n { color: var(--li); }
+  .stat-item[data-p="twitter"] .stat-n { color: var(--tw); }
+  .stat-item[data-p="video"] .stat-n { color: var(--ig); }
+  .stat-item[data-p="blog"] .stat-n { color: var(--bl); }
+
+  /* LAYOUT */
+  .main { display: flex; height: calc(100vh - 200px); min-height: 500px; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    min-width: 220px;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .sidebar-week {
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-week-label {
+    padding: 10px 16px;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .sidebar-day {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-day:hover { background: var(--surface); }
+  .sidebar-day.active { background: var(--surface2); }
+  .sidebar-day-num {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--muted);
+    min-width: 24px;
+  }
+  .sidebar-day.active .sidebar-day-num { color: var(--accent); }
+  .sidebar-day-dots { display: flex; gap: 3px; flex-wrap: wrap; max-width: 100px; }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-li { background: var(--li); }
+  .dot-tw { background: var(--tw); }
+  .dot-ig { background: var(--ig); }
+  .dot-tt { background: var(--tt); }
+  .dot-bl { background: var(--bl); }
+  .sidebar-day-count { margin-left: auto; font-size: 10px; color: var(--dim); }
+
+  /* CONTENT PANEL */
+  .content-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+  }
+  .day-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .day-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1;
+  }
+  .day-header .day-subline {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .posts-grid { display: flex; flex-direction: column; gap: 10px; }
+
+  .post-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .post-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .post-card.p-linkedin::before { background: var(--li); }
+  .post-card.p-twitter::before { background: var(--tw); }
+  .post-card.p-instagram::before { background: var(--ig); }
+  .post-card.p-tiktok::before { background: var(--tt); }
+  .post-card.p-blog::before { background: var(--bl); }
+  .post-card.p-video::before { background: linear-gradient(180deg, #b07eff, #ff6ec7); }
+  .post-card:hover { border-color: var(--border2); background: var(--surface2); }
+  .post-card.expanded { border-color: var(--border2); background: var(--surface2); }
+
+  .post-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .platform-badge {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .badge-li { background: var(--li-bg); color: var(--li); }
+  .badge-tw { background: var(--tw-bg); color: var(--tw); }
+  .badge-ig { background: var(--ig-bg); color: var(--ig); }
+  .badge-tt { background: var(--tt-bg); color: var(--tt); }
+  .badge-bl { background: var(--bl-bg); color: var(--bl); }
+  .badge-vid { background: linear-gradient(90deg, rgba(176,126,255,0.15), rgba(255,110,199,0.15)); color: #d49fff; }
+
+  .post-slot { font-size: 10px; color: var(--muted); }
+  .post-title { font-size: 13px; color: var(--text); font-weight: 500; line-height: 1.4; }
+  .post-brief {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    display: none;
+  }
+  .post-card.expanded .post-brief { display: block; }
+  .post-arrow {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--dim);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .post-card.expanded .post-arrow { transform: rotate(180deg); }
+
+  /* EMPTY STATE */
+  .empty-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: var(--dim);
+    gap: 8px;
+  }
+  .empty-day .big { font-family: 'Fraunces', serif; font-size: 3rem; font-weight: 300; }
+
+  /* TODAY INDICATOR */
+  .today-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #7de8f0, #b07eff);
+    color: #0e0e0e;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  /* FOOTER */
+  footer {
+    padding: 12px 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--dim);
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; }
+  .leg { display: flex; align-items: center; gap: 5px; }
+  .leg-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  @media (max-width: 700px) {
+    .sidebar { width: 56px; min-width: 56px; }
+    .sidebar-day-dots, .sidebar-day-count { display: none; }
+    .sidebar-day-num { font-size: 0.9rem; min-width: unset; }
+    .content-panel { padding: 1rem; }
+    header { padding: 1.5rem 1rem 1rem; }
+    .stats-bar { flex-wrap: nowrap; }
+    .stat-item { padding: 0.75rem 0.75rem; min-width: 70px; }
+    .stat-n { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="LOGO_declic_digital.jpg" alt="Déclic Digital" style="height:60px;object-fit:contain;display:block;">
+  <div class="header-meta">
+    <span id="today-display"></span>
+    <span>Mai 2026 · 116 publications</span>
+    <span>SEO · GEO · Création de sites</span>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-item active" data-p="all">
+    <div class="stat-n">124</div>
+    <div class="stat-l">Total</div>
+  </div>
+  <div class="stat-item" data-p="linkedin">
+    <div class="stat-n">31</div>
+    <div class="stat-l">LinkedIn</div>
+  </div>
+  <div class="stat-item" data-p="twitter">
+    <div class="stat-n">62</div>
+    <div class="stat-l">X / Twitter</div>
+  </div>
+  <div class="stat-item" data-p="video">
+    <div class="stat-n">9</div>
+    <div class="stat-l">Insta & TikTok</div>
+  </div>
+  <div class="stat-item" data-p="blog">
+    <div class="stat-n">15</div>
+    <div class="stat-l">Blog</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="sidebar" id="sidebar"></div>
+  <div class="content-panel" id="content-panel"></div>
+</div>
+
+<footer>
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:var(--li)"></div>LinkedIn</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--tw)"></div>X / Twitter</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--ig)"></div>Instagram & TikTok</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--bl)"></div>Blog</div>
+  </div>
+  <div>Cliquer sur un post pour voir le brief · Filtre par plateforme en haut</div>
+</footer>
+
+<script>
+const DAYS_FR = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+const MONTHS_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+const data = {
+  linkedin: [
+    {d:1, t:"Qu'est-ce que le GEO ?", b:"Intro au Generative Engine Optimization : pourquoi votre contenu doit être lisible par les IA. Thread éducatif avec chiffres clés."},
+    {d:2, t:"SEO vs GEO : les 3 différences clés", b:"Comparaison visuelle entre SEO classique et GEO. Format carrousel / infographie texte pour fort engagement."},
+    {d:3, t:"Erreur #1 des créateurs de sites en 2026", b:"Oublier la structure sémantique. Explication courte, liste d'actions rapides en commentaire."},
+    {d:4, t:"Témoignage client (résultat SEO)", b:"Partage d'un cas concret : gain de positions, trafic organique. Humaniser le service."},
+    {d:5, t:"Checklist on-page SEO 2026", b:"10 points à vérifier avant de publier une page. Format liste à sauvegarder."},
+    {d:6, t:"L'IA change-t-elle vraiment le SEO ?", b:"Opinion tranchée + données. Encourager le débat en commentaires."},
+    {d:7, t:"Comment choisir son CMS en 2026 ?", b:"WordPress vs Webflow vs Framer : analyse rapide selon profil client."},
+    {d:8, t:"Les signaux E-E-A-T expliqués simplement", b:"Expérience, Expertise, Autorité, Fiabilité. Post pédagogique avec exemple concret dans le secteur web."},
+    {d:9, t:"Outil du moment : Screaming Frog tips", b:"3 fonctions méconnues de Screaming Frog. Post expert, communauté SEO."},
+    {d:10, t:"Pourquoi votre blog ne génère pas de leads", b:"5 raisons classiques. Post actionnable qui amène vers une consultation."},
+    {d:11, t:"Anatomie d'une bonne page de service", b:"Structure optimale : H1, intro, bénéfices, preuve sociale, CTA. Carrousel textuel."},
+    {d:12, t:"GEO : comment être cité par ChatGPT", b:"Les 4 critères qu'on repère dans les sources utilisées par les LLM. Post original."},
+    {d:13, t:"Mon process de création de site de A à Z", b:"Thread ou post long format : brief → maquette → dev → SEO → livraison."},
+    {d:14, t:"Chiffre de la semaine : coût d'acquisition SEO vs Ads", b:"Donnée percutante, format court, invite au partage."},
+    {d:15, t:"Les balises méta sont-elles encore utiles ?", b:"Réponse nuancée, vrai/faux, bonne accroche."},
+    {d:16, t:"Comment auditer son site en 30 min", b:"Guide rapide, outil gratuit, valeur immédiate."},
+    {d:17, t:"Le maillage interne : votre arme secrète", b:"Explication simple + schéma textuel. Très partageable."},
+    {d:18, t:"Retour d'expérience : refonte SEO d'un site e-commerce", b:"Histoire concrète, avant/après, résultats mesurables."},
+    {d:19, t:"Core Web Vitals en 2026 : toujours important ?", b:"État des lieux, conseils pratiques, lien vers article de blog."},
+    {d:20, t:"Créer un site qui se positionne dès le lancement", b:"Architecture, contenu pilier, structure de silos. Post stratégique."},
+    {d:21, t:"Question à ma communauté : votre plus grand défi SEO ?", b:"Post interactif, sondage ou question ouverte. Booster l'engagement."},
+    {d:22, t:"GEO : structurer son contenu pour les IA génératives", b:"Balisage schema, FAQ, données structurées. Post expert."},
+    {d:23, t:"Les 5 pages indispensables d'un site pro", b:"Accueil, À propos, Services, Blog, Contact. Avec tips SEO pour chacune."},
+    {d:24, t:"Pourquoi le contenu long format reste roi", b:"Données sur les articles 1500+ mots. Argument pour investir dans le blog."},
+    {d:25, t:"Freelance vs agence : comment faire votre choix", b:"Analyse honnête, aider le prospect à décider."},
+    {d:26, t:"Mise à jour d'algorithme Google : ce qui change", b:"Résumé des dernières mises à jour, impact pratique."},
+    {d:27, t:"Comment rédiger un brief SEO efficace", b:"Template à télécharger ou copier-coller. Post haute valeur."},
+    {d:28, t:"Votre site est-il indexé correctement ?", b:"Commande Google Search Console rapide, erreurs fréquentes."},
+    {d:29, t:"Leçon apprise après X projets de création de site", b:"Post authentique, retour d'expérience personnel."},
+    {d:30, t:"Récap du mois : tendances SEO/GEO de mai 2026", b:"Synthèse mensuelle, fort potentiel de sauvegarde et partage."},
+    {d:31, t:"Teaser juin : ce que je prépare pour vous", b:"Annonce de contenu à venir, maintenir l'audience engagée."},
+  ],
+  twitter: [
+    {d:1, slot:1, t:"Thread : GEO pour débutants (5 tweets)", b:"Déroule le concept GEO avec exemples. Idéal pour gagner des followers qualifiés."},
+    {d:1, slot:2, t:"Stat du jour : % de requêtes traitées par IA", b:"Chiffre percutant + question à l'audience. Format court."},
+    {d:2, slot:1, t:"SEO tip : balise title optimale en 2026", b:"Conseil actionnable en 1 tweet, avec exemple concret."},
+    {d:2, slot:2, t:"Meme/humour SEO", b:"Légèreté, engagement, partage. Ex : quand Google update un algo le vendredi soir."},
+    {d:3, slot:1, t:"Thread : 5 erreurs de structure de site", b:"Thread éducatif, chaque tweet = 1 erreur avec solution."},
+    {d:3, slot:2, t:"Lien vers article de blog (nouveau)", b:"Teaser + URL de l'article du jour. Drive du trafic."},
+    {d:4, slot:1, t:"Hot take : le SEO technique est sous-estimé", b:"Opinion forte, invite au débat, bonne portée organique."},
+    {d:4, slot:2, t:"Outil SEO gratuit à connaître", b:"Recommandation courte, outil méconnu, valeur immédiate."},
+    {d:5, slot:1, t:"Thread : checklist SEO on-page", b:"Version condensée de la checklist LinkedIn. Adapté au format X."},
+    {d:5, slot:2, t:"Question : vous préférez WordPress ou autre CMS ?", b:"Sondage ou question ouverte. Interaction rapide."},
+    {d:6, slot:1, t:"GEO tip : pourquoi les FAQ boostent vos chances d'être cité par l'IA", b:"Conseil actionnable, format court."},
+    {d:6, slot:2, t:"Lien article de blog", b:"Teaser de l'article publié ce jour."},
+    {d:7, slot:1, t:"Thread : histoire d'une refonte SEO réussie", b:"3-4 tweets racontant le projet et les résultats."},
+    {d:7, slot:2, t:"Conseil vitesse de chargement", b:"1 tip Core Web Vitals, format ultra-court."},
+    {d:8, slot:1, t:"E-E-A-T : le résumé en 4 tweets", b:"Thread pédagogique, reprend le post LinkedIn de la journée."},
+    {d:8, slot:2, t:"Réaction à l'actualité SEO du moment", b:"Commentaire sur news Google/IA du jour. Montre l'expertise et la veille."},
+    {d:9, slot:1, t:"Thread : Screaming Frog tips avancés", b:"Complément du post LinkedIn. Audience dev/SEO technique."},
+    {d:9, slot:2, t:"Hot take : le blog est mort, vive le blog", b:"Opinion décalée sur le contenu long format en 2026."},
+    {d:10, slot:1, t:"5 raisons pourquoi votre blog ne convertit pas", b:"Liste directe, chaque point = 1 tweet."},
+    {d:10, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:11, slot:1, t:"Thread : anatomie d'une bonne page de service", b:"Version X du carrousel LinkedIn."},
+    {d:11, slot:2, t:"Stat maillage interne", b:"Donnée sur l'impact du maillage, brève."},
+    {d:12, slot:1, t:"GEO : les sources préférées de ChatGPT", b:"Thread sur les types de contenus les plus cités par les LLM."},
+    {d:12, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:13, slot:1, t:"Thread : mon process de création de site", b:"Condensé du post LinkedIn en 5 tweets."},
+    {d:13, slot:2, t:"Tip accessibilité et SEO", b:"Connexion entre a11y et référencement. Angle original."},
+    {d:14, slot:1, t:"Chiffre : ROI SEO vs Google Ads", b:"Données concrètes, invite au partage."},
+    {d:14, slot:2, t:"Question week-end : votre stack web préférée ?", b:"Engagement détendu, fin de semaine."},
+    {d:15, slot:1, t:"Balises méta : vrai/faux en 5 tweets", b:"Thread mythes vs réalité."},
+    {d:15, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:16, slot:1, t:"Thread : auditer son site gratuitement", b:"Version X du guide rapide."},
+    {d:16, slot:2, t:"Tool tip : Google Search Console", b:"1 fonctionnalité peu connue de la GSC."},
+    {d:17, slot:1, t:"Maillage interne : thread pratique", b:"Comment construire un bon maillage, exemples."},
+    {d:17, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:18, slot:1, t:"Retour d'expérience e-commerce : les 3 actions qui ont tout changé", b:"Thread concis, fort potentiel viral."},
+    {d:18, slot:2, t:"Hot take : le contenu IA sans révision humaine nuit au SEO", b:"Opinion, débat."},
+    {d:19, slot:1, t:"Core Web Vitals 2026 : thread d'état des lieux", b:"Reprend l'article de blog du jour."},
+    {d:19, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:20, slot:1, t:"Thread : créer un site bien positionné dès J+1", b:"Stratégie de contenu pilier, silos, mots-clés."},
+    {d:20, slot:2, t:"Tip : nommer correctement ses images pour le SEO", b:"Conseil ultra-simple, très partageable."},
+    {d:21, slot:1, t:"Question : votre plus grand défi SEO en 2026 ?", b:"Sondage ou question ouverte. Beaucoup d'interactions attendues."},
+    {d:21, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:22, slot:1, t:"Thread : données structurées schema.org pour le GEO", b:"Guide pratique, audience technique."},
+    {d:22, slot:2, t:"Meme IA et SEO", b:"Humour sur l'IA dans le SEO. Légèreté, partage."},
+    {d:23, slot:1, t:"Thread : les 5 pages essentielles d'un site", b:"1 tweet par page avec le tip SEO associé."},
+    {d:23, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:24, slot:1, t:"Contenu long format : les chiffres qui convainquent", b:"Données sur les articles 1500+ mots vs courts."},
+    {d:24, slot:2, t:"Hot take : les micro-sites thématiques vont faire leur retour", b:"Opinion originale, débat."},
+    {d:25, slot:1, t:"Freelance vs agence : thread comparatif", b:"Aide le prospect à choisir. Version condensée du post LinkedIn."},
+    {d:25, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:26, slot:1, t:"Mise à jour Google : ce que vous devez faire maintenant", b:"Réaction rapide à l'actualité, conseil pratique."},
+    {d:26, slot:2, t:"Tool tip : PageSpeed Insights", b:"Comment lire et interpréter rapidement son score."},
+    {d:27, slot:1, t:"Thread : rédiger un brief SEO en 10 min", b:"Template condensé, très haute valeur."},
+    {d:27, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:28, slot:1, t:"Est-ce que votre site est bien indexé ? Vérifiez en 30s", b:"Tip Search Console rapide."},
+    {d:28, slot:2, t:"Meme fin de semaine SEO", b:"Légèreté avant le week-end."},
+    {d:29, slot:1, t:"Thread : leçons apprises après des dizaines de projets web", b:"Authentique, partage d'expérience, fort engagement."},
+    {d:29, slot:2, t:"Lien article de blog", b:"Teaser article du jour."},
+    {d:30, slot:1, t:"Récap tendances SEO/GEO de mai 2026", b:"Thread synthèse mensuelle. Archivable, partageable."},
+    {d:30, slot:2, t:"Merci + teaser juin", b:"Post de clôture mensuelle, ton humain."},
+    {d:31, slot:1, t:"Thread : ce qui m'a le plus surpris ce mois-ci en SEO", b:"Réflexion personnelle, ton authentique."},
+    {d:31, slot:2, t:"Question : qu'est-ce que vous voulez apprendre en juin ?", b:"Co-construction du contenu à venir. Engagement fort."},
+  ],
+  video: [
+    {d:3,  t:"SEO vs GEO : c'est quoi la différence ?", b:"Face cam. Expliquer simplement les deux concepts et pourquoi ça change tout pour un site en 2026."},
+    {d:7,  t:"WordPress, Webflow ou Framer : lequel choisir ?", b:"Face cam. Donner son avis tranché selon le profil du client. Ton direct et personnel."},
+    {d:10, t:"J'audite un vrai site en direct : ce que j'ai trouvé", b:"Face cam. Raconter les erreurs découvertes sur un site (anonymisé). Très concret, très engageant."},
+    {d:14, t:"Ce que Google ne vous dit pas", b:"Face cam. 3 faits contre-intuitifs sur l'algo. Angle révélation, ton direct."},
+    {d:17, t:"Le maillage interne : pourquoi personne n'en parle ?", b:"Face cam. Expliquer le concept simplement avec des mots du quotidien. Hook : 'vous laissez du SEO sur la table'."},
+    {d:21, t:"Ce que je vérifie avant de lancer un site", b:"Face cam. Partage personnel de checklist. Ton expert et accessible, comme si tu conseillais un ami."},
+    {d:24, t:"Avant / après : ce que j'ai changé sur un site pour le faire remonter sur Google", b:"Face cam. Raconter un vrai cas client (sans nommer). Résultats concrets à la fin."},
+    {d:28, t:"Le GEO : la prochaine révolution pour votre visibilité en ligne", b:"Face cam. Expliquer pourquoi être cité par ChatGPT ou Perplexity, c'est le nouveau SEO. Angle pionnier."},
+    {d:31, t:"Ce que j'ai appris ce mois-ci sur le SEO et le GEO", b:"Face cam. Récap personnel de mai, ton détendu. Teaser du contenu de juin."},
+  ],
+  blog: [
+    {d:3, t:"SEO vs GEO : Guide complet pour 2026", b:"Article pilier 2000+ mots. Définitions, différences, stratégie. Cible les requêtes 'GEO SEO' et 'Generative Engine Optimization'."},
+    {d:5, t:"Comment choisir son CMS : WordPress, Webflow ou Framer ?", b:"Comparatif détaillé. Tableaux, use cases, recommandations selon profil. Cible 'meilleur CMS 2026'."},
+    {d:8, t:"E-E-A-T : comment optimiser ses signaux de confiance", b:"Guide pratique, exemples concrets, checklist. Cible 'améliorer E-E-A-T site web'."},
+    {d:10, t:"5 raisons pour lesquelles votre blog ne génère pas de leads (et comment y remédier)", b:"Article actionnable, études de cas intégrées. Fort potentiel SEO et social."},
+    {d:13, t:"Mon process complet de création de site web SEO-friendly", b:"Article détaillé étape par étape. Brief → maquette → développement → optimisation → livraison."},
+    {d:15, t:"Balises méta en 2026 : ce qui compte vraiment", b:"Article de clarification, mythes vs réalité, conseils pratiques. Mise à jour des bonnes pratiques."},
+    {d:17, t:"Le maillage interne : stratégie complète pour booster votre SEO", b:"Guide complet avec schémas, exemples de silos, erreurs à éviter. Article très partageable."},
+    {d:19, t:"Core Web Vitals 2026 : guide de survie pour les propriétaires de sites", b:"État des lieux, outils de mesure, actions concrètes pour chaque indicateur."},
+    {d:22, t:"GEO : comment structurer son contenu pour être cité par les IA", b:"Article pionnier sur la thématique. Balisage schema, FAQ, autorité topique. Excellent pour le positionnement."},
+    {d:24, t:"Pourquoi le contenu long format reste indispensable en 2026", b:"Données, études, argumentation. Article de fond pour convaincre les sceptiques."},
+    {d:26, t:"Mise à jour d'algorithme Google : analyse et recommandations", b:"Article d'actualité, à publier rapidement après une update. Montre la veille et l'expertise."},
+    {d:27, t:"Comment rédiger un brief SEO parfait (template inclus)", b:"Article très pratique avec template téléchargeable. Fort potentiel de génération de leads."},
+    {d:29, t:"Créer un site web qui se positionne dès le lancement : stratégie complète", b:"Article stratégique, architecture de l'information, contenu pilier, silos thématiques."},
+    {d:30, t:"Tendances SEO & GEO de mai 2026 : ce qu'il faut retenir", b:"Article récapitulatif mensuel. Format digest, fort potentiel newsletter et partage."},
+    {d:31, t:"Freelance SEO vs agence web : comment faire le bon choix", b:"Article comparatif honnête et sans parti pris. Aide le prospect à décider et à vous contacter."},
+  ]
+};
+
+const WEEKS = [
+  {label:'Semaine 1', days:[null,null,null,null,1,2,3,4]},
+  {label:'Semaine 2', days:[5,6,7,8,9,10,11]},
+  {label:'Semaine 3', days:[12,13,14,15,16,17,18]},
+  {label:'Semaine 4', days:[19,20,21,22,23,24,25]},
+  {label:'Semaine 5', days:[26,27,28,29,30,31,null]},
+];
+
+let activeFilter = 'all';
+let activeDay = null;
+
+function getPostsForDay(day) {
+  const posts = [];
+  const li = data.linkedin.find(x=>x.d===day);
+  if(li) posts.push({platform:'linkedin', cls:'p-linkedin', badge:'badge-li', label:'LinkedIn', ...li});
+  data.twitter.filter(x=>x.d===day).forEach(t => posts.push({platform:'twitter', cls:'p-twitter', badge:'badge-tw', label:'X / Twitter', ...t}));
+  const vid = data.video.find(x=>x.d===day);
+  if(vid) posts.push({platform:'video', cls:'p-video', badge:'badge-vid', label:'Instagram & TikTok', ...vid});
+  const bl = data.blog.find(x=>x.d===day);
+  if(bl) posts.push({platform:'blog', cls:'p-blog', badge:'badge-bl', label:'Blog', ...bl});
+  return posts;
+}
+
+function hasPlatform(day, platform) {
+  if(platform==='all') return getPostsForDay(day).length > 0;
+  const p = platform;
+  return getPostsForDay(day).some(post => post.platform === p || (p === 'video' && post.platform === 'video'));
+}
+
+function buildSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.innerHTML = '';
+  const today = new Date();
+  const isToday = (d) => today.getFullYear()===2026 && today.getMonth()===4 && today.getDate()===d;
+
+  WEEKS.forEach(week => {
+    const wDiv = document.createElement('div');
+    wDiv.className = 'sidebar-week';
+    wDiv.innerHTML = `<div class="sidebar-week-label">${week.label}</div>`;
+    sidebar.appendChild(wDiv);
+
+    week.days.forEach(d => {
+      if(!d) return;
+      const posts = getPostsForDay(d);
+      const filtered = activeFilter==='all' ? posts : posts.filter(p=>p.platform===activeFilter || (activeFilter==='video' && p.platform==='video'));
+      if(filtered.length===0 && activeFilter!=='all') return;
+
+      const div = document.createElement('div');
+      div.className = 'sidebar-day' + (activeDay===d?' active':'');
+      div.onclick = () => { activeDay = d; buildSidebar(); buildContent(); };
+
+      const dots = posts.map(p => {
+        const cls = {linkedin:'dot-li',twitter:'dot-tw',video:'dot-ig',blog:'dot-bl'}[p.platform]||'';
+        return `<div class="dot ${cls}"></div>`;
+      }).join('');
+
+      div.innerHTML = `
+        <div class="sidebar-day-num">${d}${isToday(d)?'<span class="today-badge">auj.</span>':''}</div>
+        <div class="sidebar-day-dots">${dots}</div>
+        <div class="sidebar-day-count">${posts.length}</div>
+      `;
+      wDiv.appendChild(div);
+    });
+  });
+}
+
+function buildContent() {
+  const panel = document.getElementById('content-panel');
+  if(!activeDay) {
+    panel.innerHTML = `<div class="empty-day"><div class="big">←</div><div>Sélectionne un jour</div></div>`;
+    return;
+  }
+
+  const posts = getPostsForDay(activeDay);
+  const filtered = activeFilter==='all' ? posts : posts.filter(p=>p.platform===activeFilter || (activeFilter==='video' && p.platform==='video'));
+  const dayNames = ['','Vendredi','Samedi','Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+
+  panel.innerHTML = `
+    <div class="day-header">
+      <h2>${activeDay} mai 2026</h2>
+      <div class="day-subline">${dayNames[activeDay]} · ${posts.length} publication${posts.length>1?'s':''}</div>
+    </div>
+    <div class="posts-grid" id="posts-grid"></div>
+  `;
+
+  const grid = document.getElementById('posts-grid');
+
+  if(filtered.length===0) {
+    grid.innerHTML = `<div class="empty-day" style="height:120px"><div>Aucun post pour cette plateforme ce jour.</div></div>`;
+    return;
+  }
+
+  filtered.forEach((post, i) => {
+    const card = document.createElement('div');
+    card.className = `post-card ${post.cls}`;
+    const slotLabel = post.slot ? ` · Post ${post.slot}` : '';
+    card.innerHTML = `
+      <div class="post-top">
+        <span class="platform-badge ${post.badge}">${post.label}</span>
+        <span class="post-slot">${slotLabel}</span>
+        <span class="post-arrow">▼</span>
+      </div>
+      <div class="post-title">${post.t}</div>
+      <div class="post-brief">${post.b}</div>
+    `;
+    card.onclick = () => card.classList.toggle('expanded');
+    grid.appendChild(card);
+  });
+}
+
+// Filters
+document.querySelectorAll('.stat-item').forEach(el => {
+  el.onclick = () => {
+    document.querySelectorAll('.stat-item').forEach(e=>e.classList.remove('active'));
+    el.classList.add('active');
+    activeFilter = el.dataset.p;
+    buildSidebar();
+    buildContent();
+  };
+});
+
+// Today display
+const now = new Date();
+document.getElementById('today-display').textContent =
+  `${DAYS_FR[now.getDay()]} ${now.getDate()} ${MONTHS_FR[now.getMonth()]} ${now.getFullYear()}`;
+
+// Auto-select today if in May 2026, else day 1
+const autoDay = (now.getFullYear()===2026 && now.getMonth()===4) ? now.getDate() : 1;
+activeDay = Math.min(Math.max(autoDay, 1), 31);
+
+buildSidebar();
+buildContent();
+</script>
+</body>
+</html>
